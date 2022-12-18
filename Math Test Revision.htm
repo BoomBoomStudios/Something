@@ -1,0 +1,176 @@
+<!DoctypeHTML>
+<html>
+	<head>
+		<title>Math Test Revision</title>
+	<head>
+	<body id="body">
+		<div id="timer-gauge">
+			<div id="timer-fill">
+				<p id="time">NaN SEC LEFT</p>
+			</div>
+		</div>
+		<div id="game-area">
+			<h1 id="score">SCORE: NaN</h1>
+			<h1 id="level">Level: NaN</h1>
+			<br>
+			<h1 id="problem"></h1>
+			<input id="pAns" placeholder="Enter the answer here!" type="number" oninput="check();"></input>
+		</div>
+		<style>
+			#timer-gauge{
+				width: 98%;
+				float: left;
+				height: 10%;
+				margin-left: 1%;
+				margin-top: 1%;
+			}
+			#timer-fill{
+				background: #3700B3;
+				width: 100%;
+				height: 100%;
+				padding-top: 0.01%;
+				padding-bottom: 0.01%;
+				border-radius: 12px;
+			}
+			body{
+				margin: 0;
+				font-family: sans-serif;
+				color: #E4E6EB;
+				background-color: #141414;
+			}
+			#time{
+				margin-left: 17px;
+				font-weight: 1;
+				color: black;
+			}
+			#timer-gauge,#game-area{
+				border: 1px solid #E4E6EB;
+				border-radius: 12px;
+			}
+			#game-area{
+		       	 	position: absolute;
+		       	 	bottom: 0px;
+				margin-left: 1%;
+				margin-right: 1%;
+				margin-bottom: 1%;
+				width: 98%;
+				height: 84%;
+			}
+			#score,#level{
+				float: right;
+				margin: 1%;
+				background-color: #282828;
+				border: 1px solid #282828;
+				border-radius: 15px;
+				padding: 15px;
+				font-weight: 1;
+			}
+			#problem{
+				font-weight: 1;
+				margin: 1%;
+				background-color: #282828;
+				border: 1px solid #282828;
+				border-radius: 15px;
+				padding-top: 20px;
+				padding-bottom: 20px;
+				width: 30%;
+				text-align: center;
+
+			}
+			#pAns{
+				border: 1px solid #E4E6EB;
+				border-radius: 15px;
+				margin-left: 1%;
+				width: 30%;
+				height: 10%;
+				font-size: 30px;
+				text-align: center;
+				background: #3A3B3C;
+				color:	#E4E6EB;
+			}
+		</style>
+		<script>
+			//start of editable code
+			var maxDifficulty = 9;
+			var levelVal = 7;
+			var bonusTime = 250;
+			//end of editable code
+			var level_counter = 0;
+			var level = 0;
+			var score = 0;
+			var initial_time = 50;
+			var starting_time = initial_time;
+			var time = initial_time;
+			var cAns = 0;
+			var functNum = Math.floor(Math.random() * 4);
+			var funct = "";
+			var val1 = Math.floor(Math.random() * maxDifficulty);
+			var val2 = Math.floor(Math.random() * maxDifficulty);
+			var divRan = Math.floor(Math.random() * maxDifficulty);
+
+			if(val2 == 0){
+				val2 = 1;
+			}
+			function check(){
+				pAnsVal = document.getElementById("pAns").value;
+				const pAnsTag = document.getElementById("pAns");
+				if(time > 0){
+					if(cAns == pAnsVal){
+						score = score+1;
+						pAnsTag.value = '';
+						time = starting_time;
+						level_counter = level_counter+1;
+						if(level_counter == levelVal){
+							levelVal = levelVal+1;
+							level_counter = 0;
+							level = level+1;
+							maxDifficulty = maxDifficulty+1;
+							if(Math.round(time/(initial_time/10)) > 3){
+								starting_time = starting_time-2;
+							}
+							starting_time = starting_time-2;
+						}
+						val1 = Math.floor(Math.random() * maxDifficulty);
+						val2 = Math.floor(Math.random() * maxDifficulty);
+						divRan = Math.floor(Math.random() * maxDifficulty);
+						functNum = Math.floor(Math.random() * 4);
+
+						if(val2 == 0){
+							val2 = 1;
+						}
+					}
+				}
+			}
+			setInterval(function(){
+					document.getElementById("timer-fill").style.width = time*(100/starting_time)+"%";
+					time = time-0.025;
+					document.getElementById("time").innerHTML = Math.round(time/(initial_time/10))+" SEC LEFT";
+					document.getElementById("score").innerHTML = "SCORE: "+score;
+					document.getElementById("level").innerHTML = "Level: "+level;
+					if(functNum == 0){
+						funct = "+";
+						cAns = val1+val2;
+					}
+					else if(functNum == 1){
+						funct = "-";
+						cAns = val1-val2;
+					}
+					else if(functNum == 2){
+						funct = "&times;";
+						cAns = val1*val2;
+					}
+					else{
+						funct = "&divide;";
+						val1 = val2*divRan;
+						cAns = val1/val2;
+					}
+					document.getElementById("problem").innerHTML = val1+funct+val2;
+				if(time < 0.01){
+					document.getElementById("time").innerHTML = "TIME'S UP! RESTART THE GAME BY RELOADING THE PAGE!"
+					document.getElementById("timer-fill").style.background = "#CF6679";
+					document.getElementById("timer-fill").style.width = 100+"%";
+				}
+			}, 1);
+		</script>
+	</body>
+</html>
